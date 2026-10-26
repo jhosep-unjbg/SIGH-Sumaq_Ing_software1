@@ -1,15 +1,9 @@
-# SIGH-Sumaq_Ing_software1
 # Sistema de Gestión Hotelera "SUMAQ" (SGH)
 
 [![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?logo=php)](https://www.php.net/)
 [![CodeIgniter](https://img.shields.io/badge/CodeIgniter-4.x-EF4223?logo=codeigniter)](https://codeigniter.com/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D?logo=vuedotjs)](https://vuejs.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql)](https://www.mysql.com/)
-
-El Sistema de Gestión Hotelera "SUMAQ" es un software diseñado para centralizar y automatizar las operaciones administrativas y operativas de un establecimiento hotelero, optimizando los flujos de trabajo de recepción, clientes y administración.
----
-
-# Sistema de Gestión Hotelera - Hotel Sumaq
 
 ## Descripción del proyecto
 
