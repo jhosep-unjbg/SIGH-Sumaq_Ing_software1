@@ -1,0 +1,58 @@
+# SUMAQ Hotel - Docker Compose MVP
+version: "3.9"
+
+services:
+  # API FastAPI
+  api:
+    build:
+      context: ../../apps/api
+      dockerfile: ../../infra/docker/Dockerfile.api
+    container_name: sumaq-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../../.env.example
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://sumaq:sumaq@db:5432/sumaq_hotel
+    depends_on:
+      - db
+    volumes:
+      - ../../apps/api:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - sumaq-net
+
+  # PostgreSQL Primary
+  db:
+    image: postgres:16-alpine
+    container_name: sumaq-db
+    environment:
+      POSTGRES_USER: sumaq
+      POSTGRES_PASSWORD: sumaq
+      POSTGRES_DB: sumaq_hotel
+    ports:
+      - "5432:5432"
+    volumes:
+      - sumaq_pgdata:/var/lib/postgresql/data
+    networks:
+      - sumaq-net
+
+  # Nginx (API Gateway simple)
+  nginx:
+    image: nginx:alpine
+    container_name: sumaq-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    networks:
+      - sumaq-net
+
+volumes:
+  sumaq_pgdata:
+
+networks:
+  sumaq-net:
+    driver: bridge
