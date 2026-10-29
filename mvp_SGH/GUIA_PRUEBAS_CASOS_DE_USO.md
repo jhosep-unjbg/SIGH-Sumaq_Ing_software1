@@ -7,32 +7,35 @@ API REST Centralizada · Python / FastAPI · Monolito Modular
 
 ## 1. Lista de casos de uso
 
+Los casos se agrupan en los cinco módulos de trabajo acordados. Esta organización es para pruebas y no cambia los módulos internos ni las rutas actuales de la API. La numeración se conserva para mantener las referencias de la secuencia de prueba.
+
 | # | Módulo | Caso de uso | Método | Ruta |
 |---|--------|-------------|--------|------|
-| 1 | General | Health check | `GET` | `/health` |
+| — | Clientes | Sin casos independientes implementados; las reservas reciben `huesped_id`. | — | — |
+| 10 | Habitación | Crear tarea de limpieza | `POST` | `/api/v1/operacion-habitaciones/` |
+| 11 | Habitación | Completar tarea | `POST` | `/api/v1/operacion-habitaciones/{id}/completar` |
+| 12 | Habitación | Listar tareas | `GET` | `/api/v1/operacion-habitaciones/` |
 | 2 | Reservas | Crear reserva | `POST` | `/api/v1/reservas/` |
 | 3 | Reservas | Listar reservas | `GET` | `/api/v1/reservas/` |
 | 4 | Reservas | Obtener reserva por ID | `GET` | `/api/v1/reservas/{id}` |
 | 5 | Reservas | Conflicto de fechas (doble reserva) | `POST` | `/api/v1/reservas/` |
-| 6 | Estadías | Crear estadía | `POST` | `/api/v1/estadias/` |
-| 7 | Estadías | Check-in | `POST` | `/api/v1/estadias/{id}/check-in` |
-| 8 | Estadías | Check-out | `POST` | `/api/v1/estadias/{id}/check-out` |
-| 9 | Estadías | Listar estadías | `GET` | `/api/v1/estadias/` |
-| 10 | Operación | Crear tarea de limpieza | `POST` | `/api/v1/operacion-habitaciones/` |
-| 11 | Operación | Completar tarea | `POST` | `/api/v1/operacion-habitaciones/{id}/completar` |
-| 12 | Operación | Listar tareas | `GET` | `/api/v1/operacion-habitaciones/` |
-| 13 | Cafetería | Crear producto | `POST` | `/api/v1/cafeteria/productos` |
-| 14 | Cafetería | Listar productos | `GET` | `/api/v1/cafeteria/productos` |
-| 15 | Cafetería | Registrar consumo | `POST` | `/api/v1/cafeteria/consumos` |
-| 16 | Cafetería | Listar consumos | `GET` | `/api/v1/cafeteria/consumos` |
-| 17 | Cuentas | Crear cargo | `POST` | `/api/v1/cuentas-pagos/cargos` |
-| 18 | Cuentas | Registrar pago | `POST` | `/api/v1/cuentas-pagos/pagos` |
-| 19 | Cuentas | Consultar saldo | `GET` | `/api/v1/cuentas-pagos/saldo/{estadia_id}` |
-| 20 | Cuentas | Listar cargos | `GET` | `/api/v1/cuentas-pagos/cargos` |
-| 21 | Identidad | Crear usuario | `POST` | `/api/v1/identidad/usuarios` |
-| 22 | Identidad | Login | `POST` | `/api/v1/identidad/login` |
-| 23 | Identidad | Login inválido | `POST` | `/api/v1/identidad/login` |
-| 24 | Identidad | Listar usuarios | `GET` | `/api/v1/identidad/usuarios` |
+| 6 | Reservas | Crear estadía | `POST` | `/api/v1/estadias/` |
+| 7 | Reservas | Check-in | `POST` | `/api/v1/estadias/{id}/check-in` |
+| 8 | Reservas | Check-out | `POST` | `/api/v1/estadias/{id}/check-out` |
+| 9 | Reservas | Listar estadías | `GET` | `/api/v1/estadias/` |
+| 17 | Pagos | Crear cargo | `POST` | `/api/v1/cuentas-pagos/cargos` |
+| 18 | Pagos | Registrar pago | `POST` | `/api/v1/cuentas-pagos/pagos` |
+| 19 | Pagos | Consultar saldo | `GET` | `/api/v1/cuentas-pagos/saldo/{estadia_id}` |
+| 20 | Pagos | Listar cargos | `GET` | `/api/v1/cuentas-pagos/cargos` |
+| 1 | Administración | Health check | `GET` | `/health` |
+| 13 | Administración | Crear producto | `POST` | `/api/v1/cafeteria/productos` |
+| 14 | Administración | Listar productos | `GET` | `/api/v1/cafeteria/productos` |
+| 15 | Administración | Registrar consumo | `POST` | `/api/v1/cafeteria/consumos` |
+| 16 | Administración | Listar consumos | `GET` | `/api/v1/cafeteria/consumos` |
+| 21 | Administración | Crear usuario | `POST` | `/api/v1/identidad/usuarios` |
+| 22 | Administración | Login | `POST` | `/api/v1/identidad/login` |
+| 23 | Administración | Login inválido | `POST` | `/api/v1/identidad/login` |
+| 24 | Administración | Listar usuarios | `GET` | `/api/v1/identidad/usuarios` |
 
 ---
 
@@ -43,13 +46,13 @@ API REST Centralizada · Python / FastAPI · Monolito Modular
 **Carpeta obligatoria:**
 
 ```text
-mpv_SGH\apps\api
+mvp_SGH\apps\api
 ```
 
-Ruta completa de ejemplo (Windows):
+Desde PowerShell, cambia a esa carpeta dentro de tu clon:
 
-```text
-C:\Rodrigo\software1_proyecto\SIGH-Sumaq_Ing_software1\mpv_SGH\apps\api
+```powershell
+cd "<ruta-del-repositorio>\mvp_SGH\apps\api"
 ```
 
 > No ejecutes los comandos desde `app\`, ni desde `modules\`, ni desde la raíz del repo.  
@@ -78,7 +81,7 @@ py --version
 
 ```powershell
 # 1. Ir a la carpeta correcta
-cd C:\Rodrigo\software1_proyecto\SIGH-Sumaq_Ing_software1\mpv_SGH\apps\api
+cd "<ruta-del-repositorio>\mvp_SGH\apps\api"
 
 # 2. Crear entorno virtual (solo la primera vez)
 python -m venv .venv
@@ -132,6 +135,8 @@ En Swagger (`/docs`): botón **Authorize** no aplica aquí; el header se agrega 
 ## 3. Cómo probar cada caso de uso
 
 Usa **http://127.0.0.1:8000/docs** → **Try it out** → **Execute**.
+
+Los pasos siguientes conservan el orden necesario para reutilizar los IDs entre casos. La clasificación de cada caso por módulo está en la tabla anterior.
 
 ---
 
@@ -505,12 +510,16 @@ Para no perder IDs, sigue este flujo:
 ## 6. Comandos rápidos (copiar y pegar)
 
 ```powershell
-cd C:\Rodrigo\software1_proyecto\SIGH-Sumaq_Ing_software1\mpv_SGH\apps\api
+cd "<ruta-del-repositorio>\mvp_SGH\apps\api"
 .\.venv\Scripts\Activate.ps1
 uvicorn app.main:app --reload --port 8000
 ```
 
 Luego abrir: **http://127.0.0.1:8000/docs**
+
+## 7. Estructura para futuras pruebas unitarias
+
+Las carpetas y criterios de organización están en [`apps/api/tests/unit/README.md`](apps/api/tests/unit/README.md). La guía actual contiene pruebas manuales de API; todavía no hay pruebas unitarias implementadas.
 
 ---
 
