@@ -1,0 +1,7 @@
+Copyright (c) 2026 Equipo de desarrollo de SUMAQ
+
+Todos los derechos reservados.
+
+Este proyecto se presenta con fines académicos. No se concede permiso para
+copiar, modificar, distribuir, sublicenciar o utilizar este software fuera de
+los usos autorizados expresamente por el equipo propietario.
