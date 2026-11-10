@@ -1,0 +1,16 @@
+from abc import ABC, abstractmethod
+from typing import List, Optional
+from uuid import UUID
+from app.modules.cuentas_pagos.domain.entities.cargo import Cargo, Pago
+
+class ICuentaRepository(ABC):
+    @abstractmethod
+    async def save_cargo(self, cargo: Cargo) -> Cargo: ...
+    @abstractmethod
+    async def get_cargo(self, cargo_id: UUID, tenant_id: UUID) -> Optional[Cargo]: ...
+    @abstractmethod
+    async def list_cargos(self, tenant_id: UUID, estadia_id: Optional[UUID] = None) -> List[Cargo]: ...
+    @abstractmethod
+    async def save_pago(self, pago: Pago) -> Pago: ...
+    @abstractmethod
+    async def list_pagos(self, tenant_id: UUID, estadia_id: Optional[UUID] = None) -> List[Pago]: ...
