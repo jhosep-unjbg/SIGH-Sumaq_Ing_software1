@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Este README contiene documentación de una versión anterior PHP/XAMPP. El MVP actual está en [`mvp_SGH`](./mvp_SGH/README.md) y su backend es una API FastAPI en Python. La guía para ejecutarlo y probarlo está en [`mvp_SGH/GUIA_PRUEBAS_CASOS_DE_USO.md`](./mvp_SGH/GUIA_PRUEBAS_CASOS_DE_USO.md). Las interfaces web y móvil aún no están implementadas; el almacenamiento actual de la API es en memoria.
+
 # Sistema de Gestión Hotelera "SUMAQ" (SGH)
 
 [![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?logo=php)](https://www.php.net/)
