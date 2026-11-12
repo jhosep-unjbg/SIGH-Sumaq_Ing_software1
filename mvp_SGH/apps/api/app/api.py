@@ -11,6 +11,7 @@ from app.modules.operacion_habitaciones.presentation.routes import router as ope
 from app.modules.cafeteria_inventario.presentation.routes import router as cafeteria_router
 from app.modules.cuentas_pagos.presentation.routes import router as cuentas_router
 from app.modules.identidad_acceso.presentation.routes import router as identidad_router
+from app.modules.huespedes.presentation.routes import router as huespedes_router
 
 api_router = APIRouter()
 
@@ -20,3 +21,4 @@ api_router.include_router(operacion_router, prefix="/operacion-habitaciones", ta
 api_router.include_router(cafeteria_router, prefix="/cafeteria", tags=["Cafetería e Inventario"])
 api_router.include_router(cuentas_router, prefix="/cuentas-pagos", tags=["Cuentas y Pagos"])
 api_router.include_router(identidad_router, prefix="/identidad", tags=["Identidad y Acceso"])
+api_router.include_router(huespedes_router, prefix="/huespedes", tags=["Huéspedes"])
