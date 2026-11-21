@@ -1,6 +1,4 @@
 # SUMAQ Hotel - Docker Compose MVP
-version: "3.9"
-
 services:
   # API FastAPI
   api:
@@ -11,9 +9,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - ../../.env.example
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://sumaq:sumaq@db:5432/sumaq_hotel
+      - ../../.env
     depends_on:
       - db
     volumes:
@@ -26,10 +22,8 @@ services:
   db:
     image: postgres:16-alpine
     container_name: sumaq-db
-    environment:
-      POSTGRES_USER: sumaq
-      POSTGRES_PASSWORD: sumaq
-      POSTGRES_DB: sumaq_hotel
+    env_file:
+      - ../../.env
     ports:
       - "5432:5432"
     volumes:
