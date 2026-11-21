@@ -2,7 +2,8 @@
 
 from uuid import UUID
 
-from app.common.exceptions import ConflictError, DomainError
+from app.common.exceptions import ConflictError, DomainError, NotFoundError
+from app.modules.huespedes.domain.repositories.huesped_repository import IHuespedRepository
 from app.modules.reservas.application.dto.reserva_dto import (
     CrearReservaDTO,
     ReservaResponseDTO,
@@ -20,8 +21,13 @@ class CrearReservaUseCase:
         "La habitación no está disponible en el rango de fechas solicitado"
     )
 
-    def __init__(self, reserva_repo: IReservaRepository) -> None:
+    def __init__(
+        self,
+        reserva_repo: IReservaRepository,
+        huesped_repo: IHuespedRepository,
+    ) -> None:
         self._reserva_repo = reserva_repo
+        self._huesped_repo = huesped_repo
 
     async def execute(
         self,
@@ -29,12 +35,18 @@ class CrearReservaUseCase:
         tenant_id: UUID,
     ) -> ReservaResponseDTO:
         """Crea una reserva si la habitación está disponible."""
+        reserva = self._crear_entidad(dto, tenant_id)
+        await self._validar_huesped(dto.huesped_id, tenant_id)
         await self._validar_disponibilidad(dto, tenant_id)
 
-        reserva = self._crear_entidad(dto, tenant_id)
         reserva_guardada = await self._reserva_repo.save(reserva)
 
         return ReservaResponseDTO.from_entity(reserva_guardada)
+
+    async def _validar_huesped(self, huesped_id: UUID, tenant_id: UUID) -> None:
+        huesped = await self._huesped_repo.get_by_id(huesped_id, tenant_id)
+        if huesped is None or not huesped.activo:
+            raise NotFoundError("Huésped no encontrado o inactivo")
 
     async def _validar_disponibilidad(
         self,
