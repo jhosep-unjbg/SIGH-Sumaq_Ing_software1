@@ -1,13 +1,20 @@
 """
 Configuración central de la aplicación.
-Carga variables de entorno.
+Carga configuración desde variables de entorno.
 """
 
-from pydantic_settings import BaseSettings
-from typing import List
+from typing import List, Optional
+
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        str_strip_whitespace=True,
+    )
+
     # App
     APP_NAME: str = "SUMAQ Hotel API"
     ENVIRONMENT: str = "development"
@@ -17,8 +24,8 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
 
     # Database (PostgreSQL Primary)
-    DATABASE_URL: str = "postgresql+asyncpg://sumaq:sumaq@localhost:5432/sumaq_hotel"
-    DATABASE_READ_URL: str = "postgresql+asyncpg://sumaq:sumaq@localhost:5433/sumaq_hotel"  # Réplica
+    DATABASE_URL: str = Field(min_length=1)
+    DATABASE_READ_URL: Optional[str] = None  # Réplica opcional
 
     # JWT / Auth (consumido desde Auth Server segregado)
     JWT_PUBLIC_KEY_PATH: str = "keys/public.pem"
@@ -27,10 +34,6 @@ class Settings(BaseSettings):
 
     # Multi-tenant
     TENANT_HEADER: str = "X-Tenant-ID"
-
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
 
 
 settings = Settings()

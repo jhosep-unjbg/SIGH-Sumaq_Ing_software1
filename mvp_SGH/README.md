@@ -174,6 +174,30 @@ La arquitectura y los patrones aplicados mejoran significativamente las métrica
 
 ---
 
+## Configuración local para Docker
+
+La API y PostgreSQL reciben su configuración desde variables de entorno. Para crear el archivo local de desarrollo, desde la carpeta `mvp_SGH` ejecuta:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Edita `.env` y reemplaza los valores `CHANGE_ME`. `DATABASE_URL` debe usar el mismo usuario y contraseña configurados en `POSTGRES_USER` y `POSTGRES_PASSWORD`. No subas `.env` a Git ni uses estos valores de ejemplo en producción.
+
+Luego inicia Compose desde `infra/docker`:
+
+```powershell
+cd infra/docker
+docker compose config --quiet
+docker compose up --build -d
+```
+
+Si ya existe un volumen PostgreSQL creado con otras credenciales, conserva en tu `.env` local el usuario y la contraseña con que se inicializó ese volumen. Cambiar las variables no modifica las credenciales de una base ya inicializada.
+
+La API requiere `DATABASE_URL` y falla durante la carga de configuración si falta o está vacía. Para ejecutar pruebas automatizadas no se necesita una base PostgreSQL: las pruebas establecen una URL de prueba aislada.
+
+---
+
 ## Estado Actual
 
 > Este repositorio contiene la **especificación arquitectónica**, diagramas y un esqueleto de código de la API.  
