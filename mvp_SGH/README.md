@@ -223,6 +223,18 @@ docker compose exec db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SEL
 Pop-Location
 ```
 
+## Errores y registros operativos (M3)
+
+Las respuestas de error usan un formato común con `error.code`, `error.message` y `request_id`. Los errores de validación solo incluyen campo y tipo, no el valor rechazado. Cada respuesta incluye el encabezado `X-Request-ID`; los clientes web pueden leerlo por CORS.
+
+La API escribe registros en stdout con nivel, request ID, método, grupo de ruta (`api_v1`, `health` u `other`), código HTTP y duración. Los errores internos incluyen tipo y ubicación del error, pero no su mensaje. No se registran cuerpos, query strings, tokens ni encabezados de solicitud.
+
+Para comprobar las pruebas de errores y observabilidad, desde `apps/api` ejecuta:
+
+```powershell
+python -m pytest tests/test_observability.py -q
+```
+
 ---
 
 ## Estado Actual
