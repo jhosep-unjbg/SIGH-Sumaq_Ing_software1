@@ -3,11 +3,23 @@ SUMAQ Hotel - API REST Centralizada
 Punto de entrada de la aplicación FastAPI
 """
 
+from contextlib import asynccontextmanager
+from typing import AsyncIterator
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import api_router
 from app.config.settings import settings
+from app.infrastructure.database import engine
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    try:
+        yield
+    finally:
+        await engine.dispose()
 
 app = FastAPI(
     title="SUMAQ Hotel API",
@@ -16,6 +28,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
 
 # CORS

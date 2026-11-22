@@ -194,7 +194,34 @@ docker compose up --build -d
 
 Si ya existe un volumen PostgreSQL creado con otras credenciales, conserva en tu `.env` local el usuario y la contraseña con que se inicializó ese volumen. Cambiar las variables no modifica las credenciales de una base ya inicializada.
 
-La API requiere `DATABASE_URL` y falla durante la carga de configuración si falta o está vacía. Para ejecutar pruebas automatizadas no se necesita una base PostgreSQL: las pruebas establecen una URL de prueba aislada.
+La API requiere `DATABASE_URL` y falla durante la carga de configuración si falta o está vacía. Las pruebas de API usan repositorios falsos y no requieren una base PostgreSQL. Las tablas se crean mediante Alembic; después de iniciar los servicios y desde `infra/docker`, aplica las migraciones:
+
+```powershell
+docker compose exec api alembic upgrade head
+```
+
+Para comprobar la persistencia real, ejecuta la prueba de integración desde PowerShell en `mvp_SGH`. La URL se captura en una variable, sin mostrar las credenciales; se cambia el host de Docker `db` por el puerto local publicado:
+
+```powershell
+Push-Location .\infra\docker
+$databaseUrl = docker compose exec -T api printenv DATABASE_URL
+Pop-Location
+$env:TEST_DATABASE_URL = $databaseUrl.Trim() -replace '@db:', '@localhost:'
+Push-Location .\apps\api
+python -m pytest app\modules\reservas\tests\test_postgres_persistence.py -q
+Pop-Location
+Remove-Item Env:TEST_DATABASE_URL
+```
+
+La prueba guarda un huésped y una reserva, los recupera desde una nueva sesión y elimina únicamente los registros del tenant generado para esa ejecución. No requiere eliminar ni recrear el volumen de PostgreSQL.
+
+Después de crear datos desde la API, esta consulta muestra filas persistidas y su huésped asociado:
+
+```powershell
+Push-Location .\infra\docker
+docker compose exec db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT r.id, r.tenant_id, h.nombre AS huesped, r.fecha_entrada, r.fecha_salida FROM reservas r JOIN huespedes h ON h.id = r.huesped_id AND h.tenant_id = r.tenant_id ORDER BY r.created_at DESC LIMIT 10;"'
+Pop-Location
+```
 
 ---
 

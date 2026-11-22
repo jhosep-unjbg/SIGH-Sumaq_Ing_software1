@@ -1,24 +1,5 @@
 from uuid import uuid4
 
-import pytest
-from fastapi.testclient import TestClient
-
-from app.main import app
-from app.modules.huespedes.infrastructure.repositories.huesped_repository_impl import (
-    _HUESPEDES,
-)
-from app.modules.reservas.infrastructure.repositories.reserva_repository_impl import _STORE
-
-
-@pytest.fixture
-def client():
-    _HUESPEDES.clear()
-    _STORE.clear()
-    with TestClient(app) as test_client:
-        yield test_client
-    _HUESPEDES.clear()
-    _STORE.clear()
-
 
 def crear_huesped(client, tenant_id):
     return client.post(
